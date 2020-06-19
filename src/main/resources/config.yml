@@ -1,0 +1,17 @@
+provider: "mysql"
+
+mysql:
+  username: "root"
+  host: "localhost"
+  port: "3306"
+  password: "password"
+  dbname: "AdvancedBan"
+
+ranks:
+  Guest:
+    isDefault: true
+    inheritance: ""
+    permissions: ""
+    chat_format: "&8&l[Guest] {username}&r: {message}"
+    nametag_format: "&8&l[Guest] {username}"
+    format: "&8&l[Guest]&r"

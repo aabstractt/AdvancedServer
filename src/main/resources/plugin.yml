@@ -1,0 +1,9 @@
+name: AdvancedServer
+
+version: 1.0.0
+
+main: us.advancedserver.AdvancedServer
+
+author: iTheTrollIdk
+
+api: ["1.0.8"]
