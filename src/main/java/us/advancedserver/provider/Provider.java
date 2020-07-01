@@ -1,26 +1,22 @@
 package us.advancedserver.provider;
 
-import cn.nukkit.utils.Hash;
+import us.advancedserver.extension.BanEntry;
 import us.advancedserver.extension.Rank;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface Provider {
 
     String getName();
 
-    void setTargetData(HashMap<String, Object> data);
+    void setTargetData(Map<String, Object> data);
 
-    void setOfflineData(HashMap<String, Object> data);
+    void setTargetAuth(Map<String, String> data);
 
-    HashMap<String, Object> getTargetData(String username);
+    Map<String, Object> getTargetData(String username);
 
-    HashMap<String, Object> getOfflineData(String username);
-
-    void deleteTargetOffline(String guestName);
-
-    void deleteTargetOffline(String columnName, String guestName);
+    Map<String, Object> getTargetAuth(String username);
 
     void createOrUpdateRank(Rank rank);
 
@@ -44,5 +40,21 @@ public interface Provider {
 
     void deletePlayerPermission(String username, String permission);
 
-    HashMap<String, Object> handleAuthData(String username);
+    void addBan(BanEntry entry);
+
+    BanEntry getBanActiveByUsername(String username);
+
+    BanEntry getBanActiveByUsername(String username, boolean permanent);
+
+    BanEntry getMuteActiveByUsername(String username);
+
+    BanEntry getMuteActiveByUsername(String username, boolean permanent);
+
+    List<BanEntry> getAllDeleteByUsername(String username);
+
+    List<BanEntry> getAllActiveByUsername(String username);
+
+    void deleteEntry(BanEntry entry);
+
+    void updateEntry(BanEntry entry);
 }

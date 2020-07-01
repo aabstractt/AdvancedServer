@@ -86,6 +86,8 @@ public class Rank {
 
         String originalFormat = this.getOriginalChatFormat();
 
+        assert $name != null;
+
         return originalFormat.replace("{inherited}", Joiner.on(" ").join($format)).replace("{prefix}", "").replace("{username}", $name).replace("{message}", $message);
     }
 

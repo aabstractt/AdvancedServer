@@ -56,6 +56,8 @@ public class PermissionsCommand extends Command {
 
         this.setAliases(new String[]{"pex", "perms"});
 
+        this.setPermission("advancedserver.command.permissions");
+
         Server.getInstance().getCommandMap().register(this.getName(), this);
 
         this.setPermissionMessage(TextFormat.RED + "You don't have permission to use this command");
@@ -106,12 +108,12 @@ public class PermissionsCommand extends Command {
                         sender.sendMessage(TextFormat.RED + "Usage: " + this.getCommandUsage(s, args[0]));
                     } else if((targetData = Utils.getTargetData(args[1])) == null) {
                         sender.sendMessage(TextFormat.RED + "User doesn't exists.");
-                    } else if(AdvancedServer.getInstance().getProvider().getRank(args[2]) != null) {
+                    } else if(AdvancedServer.getInstance().getProvider().getRank(args[2]) == null) {
                         sender.sendMessage(TextFormat.RED + "Rank doesn't exists.");
                     } else if((rank = AdvancedServer.getInstance().getProvider().getTargetRank((String) targetData.get("username"))).getName().equals(args[2])) {
                         sender.sendMessage(TextFormat.RED + (String) targetData.get("username") + " already got this rank.");
                     } else {
-                        AdvancedServer.getInstance().getProvider().setTargetRank((String) targetData.get("username"), args[2]);
+                        AdvancedServer.getInstance().getProvider().setTargetRank((String) targetData.get("username"), rank.getName());
 
                         Utils.updatePlayerPermissions((String) targetData.get("username"), true);
 
@@ -142,7 +144,7 @@ public class PermissionsCommand extends Command {
                             }
                         });
 
-                        sender.sendMessage(TextFormat.GREEN + "-- Rank information for " + rank.getName() + " --\n" + TextFormat.GREEN + "Default: " + (rank.isDefault() ? "true" : "false") + "\n" + TextFormat.GREEN + "Inherited ranks: " + ($inherited.isEmpty() ? "empty" : String.join(", ", $inherited)));
+                        sender.sendMessage(TextFormat.GREEN + "-- Rank information for " + (rank.hasFormat() ? TextFormat.colorize(rank.getFormat() + "&r&a") : rank.getName()) + " --\n" + TextFormat.GREEN + "Default: " + (rank.isDefault() ? "true" : "false") + "\n" + TextFormat.GREEN + "Inherited ranks: " + ($inherited.isEmpty() ? "empty" : String.join(", ", $inherited)));
                     }
                 break;
 
@@ -168,7 +170,7 @@ public class PermissionsCommand extends Command {
 
                         for(Rank ranks : AdvancedServer.getInstance().getProvider().getRanks()) {
                             if(ranks.hasFormat()) {
-                                $result.add(ranks.getFormat() + TextFormat.RESET + TextFormat.GREEN + " (" + ranks.getName() + ")");
+                                $result.add(TextFormat.colorize(ranks.getFormat()) + TextFormat.RESET + TextFormat.GREEN + " (" + ranks.getName() + ")");
                             } else {
                                 $result.add(ranks.getName());
                             }
@@ -183,7 +185,7 @@ public class PermissionsCommand extends Command {
                         sender.sendMessage(this.getPermissionMessage());
                     } else if(args.length <= 1) {
                         sender.sendMessage(TextFormat.RED + "Usage: " + this.getCommandUsage(s, args[0]));
-                    } else if((targetData = AdvancedServer.getInstance().getProvider().getTargetData(args[1])) == null) {
+                    } else if((targetData = Utils.getTargetData(args[1])) == null) {
                         sender.sendMessage(TextFormat.RED + "User doesn't exists.");
                     } else {
                         List<String> permissions = AdvancedServer.getInstance().getProvider().getPlayerPermissions((String) targetData.get("username"));
@@ -209,7 +211,7 @@ public class PermissionsCommand extends Command {
                         if(permissions.isEmpty()) {
                             sender.sendMessage(TextFormat.RED + "Rank " + rank.getName() + " doesn't have any rank permissions.");
                         } else {
-                            sender.sendMessage(TextFormat.BLUE + "[Permissions]" + TextFormat.GREEN + " List of all group permissions from " + rank.getName() + ": " + String.join(", ", permissions));
+                            sender.sendMessage(TextFormat.BLUE + "[Permissions]" + TextFormat.GREEN + " List of all group permissions from " + (rank.hasFormat() ? TextFormat.colorize(rank.getFormat() + "&r&a") : rank.getName()) + ": " + String.join(", ", permissions));
                         }
                     }
                     break;
